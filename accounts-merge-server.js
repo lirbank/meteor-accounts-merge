@@ -3,6 +3,14 @@ Meteor.methods({
 	// The newAccount will be merged into the oldAccount and the newAccount will be deleted.
 	mergeAccounts: function (oldAccountId) {
 
+		// mergeAccounts is for some reason called twice if the user does not take it slow when adding
+		// new login services. The second time it's called, the user is already logging out so 
+		// this.userId (and Meteor.userId() too) is null. Not sure why it's called twice, but this conditional
+		// fix the crashing.
+		if(! this.userId ) {
+			return;
+		}
+
 		// Get the old account details
 		var oldAccount = Meteor.users.findOne(oldAccountId);
 		var newAccount = Meteor.users.findOne(this.userId);
