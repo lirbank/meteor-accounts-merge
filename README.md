@@ -17,4 +17,4 @@ $ mrt add accounts-merge
 
 ## Usage
 
-See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example).
+See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.
