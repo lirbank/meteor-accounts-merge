@@ -21,17 +21,17 @@ To use accounts-merge, simply use Meteor.signInWithGoogle() instead of Meteor.lo
 // ON THE CLIENT:
 Meteor.signInWithGoogle ({}, function (error, mergedUsers) {
 
-	// mergedUsers is set if a merge occured
-	if (mergedUsers) {
-		console.log('mergedUsers', mergedUsers);
+  // mergedUsers is set if a merge occured
+  if (mergedUsers) {
+    console.log('mergedUsers', mergedUsers);
 
-		// The source account (mergedUsers.sourceUserId) has now been deleted, so this is your chance
-		// to deal with you application specific DB items to avoid ending up with orphans. You'd typically
-		// want to change owner on the items beloning to the deleted user, or simply delete them.
-		Meteor.call ('mergeItems', mergedUsers.sourceUserId, mergedUsers.destinationUserId, function (error, result) {
-			// Do something
-		});
-	}
+    // The source account (mergedUsers.sourceUserId) has now been deleted, so this is your chance
+    // to deal with you application specific DB items to avoid ending up with orphans. You'd typically
+    // want to change owner on the items beloning to the deleted user, or simply delete them.
+    Meteor.call ('mergeItems', mergedUsers.sourceUserId, mergedUsers.destinationUserId, function (error, result) {
+      // Do something
+    });
+  }
 });
 // Meteor.signInWithFacebook();
 // Meteor.signInWithTwitter();
@@ -41,15 +41,15 @@ Meteor.signInWithGoogle ({}, function (error, mergedUsers) {
 ```javascript
 // ON THE SERVER:
 Meteor.methods({
-	mergeItems: function (sourceUserId, destinationUserId) {
-	
-		// Update you application specific collection
-		Items.update (
-			{"owner":sourceUserId}, 
-			{$set: {"owner": destinationUserId}}, 
-			{"multi": true}
-		);
-	}
+  mergeItems: function (sourceUserId, destinationUserId) {
+  
+    // Update you application specific collection
+    Items.update (
+      {"owner":sourceUserId}, 
+      {$set: {"owner": destinationUserId}}, 
+      {"multi": true}
+    );
+  }
 });
 ```
 
