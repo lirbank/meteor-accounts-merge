@@ -29,11 +29,28 @@ Meteor.signInWithGoogle ({}, function (error, mergedUsers) {
 		// to deal with you application specific DB items to avoid ending up with orphans. You'd typically
 		// want to change owner on the items beloning to the deleted user, or simply delete them.
 		Meteor.call ('mergeItems', mergedUsers.sourceUserId, mergedUsers.destinationUserId, function (error, result) {
+			// Do something
 		});
 	}
 });
 // Meteor.signInWithFacebook();
 // Meteor.signInWithTwitter();
+```
+
+
+```javascript
+// ON THE SERVER:
+Meteor.methods({
+	mergeItems: function (sourceUserId, destinationUserId) {
+	
+		// Update you application specific collection
+		Items.update (
+			{"owner":sourceUserId}, 
+			{$set: {"owner": destinationUserId}}, 
+			{"multi": true}
+		);
+	}
+});
 ```
 
 ## Todo
