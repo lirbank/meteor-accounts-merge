@@ -1,12 +1,11 @@
 accounts-merge
 =====================
-
 Multiple login services for Meteor accounts - enable your users to login to the same account using any login service.
 
-
+## Example
+See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.
 
 ##  Installation
-
 To enable merging of accounts, add the `accounts-merge` package and at least one login provider package: `accounts-facebook`, `accounts-github`, `accounts-google`, `accounts-meetup`, `accounts-twitter` or `accounts-weibo`.
 
 Make sure you have [Meteorite](https://github.com/oortcloud/meteorite/) installed, from inside a Meteorite-managed app run:
@@ -15,11 +14,7 @@ $ meteor add accounts-facebook accounts-google accounts-twitter
 $ mrt add accounts-merge
 ```
 
-## Example
-See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.
-
 ## Usage
-
 To use accounts-merge, simply use Meteor.signInWithGoogle() instead of Meteor.loginWithGoogle(). The new thing to notice is that the callback for signInWithGoogle() is called with two arguments, `error` and `mergedUsers`, while the callback for loginWithGoogle() is only called with a single `error` argument.
 
 ```javascript
