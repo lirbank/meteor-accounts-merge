@@ -18,6 +18,7 @@ $ mrt add accounts-merge
 To use accounts-merge, simply use Meteor.signInWithGoogle() instead of Meteor.loginWithGoogle(). The new thing to notice is that the callback for signInWithGoogle() is called with two arguments, `error` and `mergedUsers`, while the callback for loginWithGoogle() is only called with a single `error` argument.
 
 ```javascript
+// ON THE CLIENT:
 Meteor.signInWithGoogle ({}, function (error, mergedUsers) {
 
 	// mergedUsers is set if a merge occured
