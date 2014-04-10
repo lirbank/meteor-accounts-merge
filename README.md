@@ -2,6 +2,9 @@ accounts-merge
 =====================
 Multiple login services for Meteor accounts - enable your users to login to the same account using any login service.
 
+## Use case
+You decided to allow your users to sign in to your Meteor app with Google, Facebook and Twitter. A user visits your site/app and sign in with Facebook. After enjoying your app for a bit the user leaves and doesn't come back until a week later. The user now can't remeber which login service he/she signed up with and tries to login with Twitter. Now the user has two separate accounts, one for Twitter and one for Facebook. Since the new account is empty the user realize the error and click on the Facebook login. With accounts-merge the two accounts are now merged and in the future the user can sign in to its account using either Facebook or Twitter.
+
 ## Example
 See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.
 
