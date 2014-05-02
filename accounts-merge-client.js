@@ -10,6 +10,10 @@ Meteor.signInWithGoogle = function (options, callback) {
   Meteor.signInWithExternalService ('loginWithGoogle', options, callback);
 };
 
+Meteor.signInWithLinkedin = function (options, callback) {
+  Meteor.signInWithExternalService ('loginWithLinkedin', options, callback);
+};
+
 Meteor.signInWithExternalService = function (service, options, callback) {
 
   oldUserId = Meteor.userId();

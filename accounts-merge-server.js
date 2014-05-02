@@ -15,7 +15,7 @@ Meteor.methods({
     var oldAccount = Meteor.users.findOne(oldAccountId);
     var newAccount = Meteor.users.findOne(this.userId);
 
-    _services = [ "facebook", "twitter", "google" ];
+    _services = [ "facebook", "twitter", "google", "linkedin" ];
 
     for (i=0; i<_services.length; i++) {
 
@@ -27,7 +27,7 @@ Meteor.methods({
         try {
           Meteor.users.update (Meteor.userId(), {
             $unset: query
-          })
+          });
 
         } catch (e) {
           console.log('error', e.toString());
@@ -41,7 +41,7 @@ Meteor.methods({
         try {
           Meteor.users.update (oldAccountId, {
             $set: query
-          })
+          });
 
         } catch (e) {
           console.log('error', e.toString());
