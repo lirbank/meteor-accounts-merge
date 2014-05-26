@@ -1,4 +1,4 @@
-** v0.0.4 includes breaking changes - see the [changelog](https://github.com/lirbank/meteor-accounts-merge/blob/master/History.md)**
+**v0.0.4 includes breaking changes - see the [changelog](https://github.com/lirbank/meteor-accounts-merge/blob/master/History.md)**
 
 # Accounts Merge
 Multiple login services for Meteor accounts - enable your users to login to the same account using any login service.
