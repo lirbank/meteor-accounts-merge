@@ -4,7 +4,7 @@ Meteor.methods({
   mergeAccounts: function (oldAccountId) {
 
     // mergeAccounts is for some reason called twice if the user does not take it slow when adding
-    // new login services. The second time it's called, the user is already logging out so 
+    // new login services. The second time it's called, the user is already logging out so
     // this.userId (and Meteor.userId() too) is null. Not sure why it's called twice, but this conditional
     // fix the crashing.
     if(! this.userId ) {
@@ -21,7 +21,7 @@ Meteor.methods({
 
       if( newAccount.services[_services[i]] ) {
 
-        // Remove service from current user to avoid duplicate key error 
+        // Remove service from current user to avoid duplicate key error
         query = {};
         query['services.'+_services[i]] = "";
         try {
@@ -53,13 +53,7 @@ Meteor.methods({
         // + Remove the password service (will need look into making accounts-merge compatible with accounts-password later...)
         /*
         try {
-          Meteor.users.update (oldAccountId, {
-            $unset: {
-              "profile.guest": "", 
-              "services.password": "", 
-              "username": ""
-            }
-          })
+          Meteor.users.update (oldAccountId, {$unset: {"profile.guest": ""}});
 
         } catch (e) {
           console.log('error', e.toString());

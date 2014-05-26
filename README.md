@@ -1,5 +1,6 @@
-accounts-merge
-=====================
+** v0.0.4 includes breaking changes - see the [changelog](https://github.com/lirbank/meteor-accounts-merge/blob/master/History.md)**
+
+# Accounts Merge
 Multiple login services for Meteor accounts - enable your users to login to the same account using any login service.
 
 ## Use case
@@ -24,16 +25,18 @@ To use accounts-merge, simply use Meteor.signInWithGoogle() instead of Meteor.lo
 
 ```javascript
 // ON THE CLIENT:
-Meteor.signInWithGoogle ({}, function (error, mergedUsers) {
+Meteor.signInWithGoogle ({}, function (error, mergedUserId) {
 
   // mergedUsers is set if a merge occured
   if (mergedUsers) {
-    console.log('mergedUsers', mergedUsers);
+    console.log('merged/deleted userId', mergedUserId);
 
-    // The source account (mergedUsers.sourceUserId) has now been deleted, so this is your chance
-    // to deal with you application specific DB items to avoid ending up with orphans. You'd typically
-    // want to change owner on the items beloning to the deleted user, or simply delete them.
-    Meteor.call ('mergeItems', mergedUsers.sourceUserId, mergedUsers.destinationUserId, function (error, result) {
+    // The source account (mergedUserId) has now been deleted, so
+    // this is your chance to deal with application specific DB
+    // documents to avoid havin orphans. You'd typically want to
+    // change owner on the items beloning to the deleted user,
+    // or simply delete them.
+    Meteor.call ('mergeItems', mergedUserId, function (error, result) {
       // Do something
     });
   }
@@ -42,16 +45,15 @@ Meteor.signInWithGoogle ({}, function (error, mergedUsers) {
 // Meteor.signInWithTwitter();
 ```
 
-
 ```javascript
 // ON THE SERVER:
 Meteor.methods({
-  mergeItems: function (sourceUserId, destinationUserId) {
-  
+  mergeItems: function (mergedUserId) {
+
     // Update you application specific collection
     Items.update (
-      {"owner":sourceUserId}, 
-      {$set: {"owner": destinationUserId}}, 
+      {"owner":mergedUserId},
+      {$set: {"owner": Meteor.userId()}},
       {"multi": true}
     );
   }
@@ -66,3 +68,8 @@ Meteor.methods({
 * Add support for accounts-password
 * Add back guest users (temporarily removed)
 * Add support for {{loggingIn}}
+
+## License
+The MIT License (MIT) (c) Airlab.io
+
+Accounts Merge was developed as part of the [Domain List](http://domainlist.io/) project.

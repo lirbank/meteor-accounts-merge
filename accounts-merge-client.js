@@ -16,8 +16,8 @@ Meteor.signInWithLinkedin = function (options, callback) {
 
 Meteor.signInWithExternalService = function (service, options, callback) {
 
-  oldUserId = Meteor.userId();
-  oldLoginToken = localStorage.getItem('Meteor.loginToken');
+  var oldUserId = Meteor.userId();
+  var oldLoginToken = Accounts._storedLoginToken();
 
   Meteor[service]( function (error) {
 
@@ -26,7 +26,7 @@ Meteor.signInWithExternalService = function (service, options, callback) {
       return;
     }
 
-    newUserId = Meteor.userId();
+    var newUserId = Meteor.userId();
 
     // Not logged in, logging in now.
     if (!oldUserId) {
@@ -57,14 +57,13 @@ Meteor.signInWithExternalService = function (service, options, callback) {
         }
 
         // Log back in as the original (destination) user
-        localStorage.setItem('Meteor.userId', oldUserId);
-        localStorage.setItem('Meteor.loginToken', oldLoginToken);
-
-        // Return the userId of the deleted user as the result in the callback
-        //   We must send both sourceUserId AND destinationUserId with the callback since no user will be logged in
-        //   for a short period of time here. If we could wait for the login to complete before running the callback
-        //   we would not have to send back the destinationUserId, since it will be available from Meteor.userId().
-        if (typeof callback === 'function') callback (undefined, {'sourceUserId':newUserId, 'destinationUserId':oldUserId});
+        Meteor.loginWithToken( oldLoginToken, function (error) {
+          if (error) {
+            if (typeof callback === 'function') callback (error);
+            return;
+          }
+          if (typeof callback === 'function') callback (undefined, newUserId);
+        });
       });
     });
   });
