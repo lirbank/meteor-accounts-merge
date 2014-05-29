@@ -14,6 +14,10 @@ Meteor.signInWithLinkedin = function (options, callback) {
   Meteor.signInWithExternalService ('loginWithLinkedin', options, callback);
 };
 
+Meteor.signInWithGithub = function (options, callback) {
+  Meteor.signInWithExternalService ('loginWithGithub', options, callback);
+};
+
 Meteor.signInWithExternalService = function (service, options, callback) {
 
   var oldUserId = Meteor.userId();

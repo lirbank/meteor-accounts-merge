@@ -15,7 +15,7 @@ Meteor.methods({
     var oldAccount = Meteor.users.findOne(oldAccountId);
     var newAccount = Meteor.users.findOne(this.userId);
 
-    _services = [ "facebook", "twitter", "google", "linkedin" ];
+    _services = [ "facebook", "twitter", "google", "linkedin", "github" ];
 
     for (i=0; i<_services.length; i++) {
 
