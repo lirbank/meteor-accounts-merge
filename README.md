@@ -61,7 +61,6 @@ Meteor.methods({
 ```
 
 ## Todo
-* Add support for accounts-github
 * Test with accounts-password (will it work as-is?)
 * Add support for accounts-meetup
 * Add support for accounts-weibo
