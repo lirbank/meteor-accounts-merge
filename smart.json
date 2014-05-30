@@ -3,7 +3,7 @@
   "description": "Multiple login services for Meteor accounts",
   "homepage": "https://github.com/lirbank/meteor-accounts-merge",
   "author": "Mikael Lirbank (https://github.com/lirbank)",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "git": "https://github.com/lirbank/meteor-accounts-merge.git",
   "packages": {}
 }
