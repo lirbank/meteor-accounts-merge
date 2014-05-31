@@ -3,20 +3,13 @@ Meteor.methods({
   // The newAccount will be merged into the oldAccount and the newAccount will be deleted.
   mergeAccounts: function (oldAccountId) {
 
-    // mergeAccounts is for some reason called twice if the user does not take it slow when adding
-    // new login services. The second time it's called, the user is already logging out so
-    // this.userId (and Meteor.userId() too) is null. Not sure why it's called twice, but this conditional
-    // fix the crashing.
-    if(! this.userId ) {
-      return;
-    }
-
     // Get the old account details
     var oldAccount = Meteor.users.findOne(oldAccountId);
     var newAccount = Meteor.users.findOne(this.userId);
 
     _services = [ "facebook", "twitter", "google", "linkedin", "github" ];
 
+    // Move login services from loosing to winning user
     for (i=0; i<_services.length; i++) {
 
       if( newAccount.services[_services[i]] ) {
@@ -25,10 +18,7 @@ Meteor.methods({
         query = {};
         query['services.'+_services[i]] = "";
         try {
-          Meteor.users.update (Meteor.userId(), {
-            $unset: query
-          });
-
+          Meteor.users.update (Meteor.userId(), {$unset: query});
         } catch (e) {
           console.log('error', e.toString());
         }
@@ -39,10 +29,7 @@ Meteor.methods({
         query['services.'+_services[i]] = newAccount.services[_services[i]];
         query['profile.name'] = newAccount.profile.name;
         try {
-          Meteor.users.update (oldAccountId, {
-            $set: query
-          });
-
+          Meteor.users.update (oldAccountId, {$set: query});
         } catch (e) {
           console.log('error', e.toString());
         }
@@ -61,8 +48,13 @@ Meteor.methods({
         */
       }
     }
-    // Remove the current user
-    Meteor.users.remove(newAccount._id);
+    // Mark the current user as merged, and which user it was merged with.
+    // mergedWith holds the _id of the winning account.
+    Meteor.users.update(newAccount._id, {$set: {mergedWith: oldAccountId}});
+
+    if (Accounts.onMerge) {
+      Accounts.onMerge(oldAccount);
+    }
 
     return true;
   }

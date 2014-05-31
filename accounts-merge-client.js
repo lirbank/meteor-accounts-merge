@@ -34,13 +34,13 @@ Meteor.signInWithExternalService = function (service, options, callback) {
 
     // Not logged in, logging in now.
     if (!oldUserId) {
-      if (typeof callback === 'function') callback ();
+      if (typeof callback === 'function') callback (undefined, true);
       return;
     }
 
     // Login service has already been added, just logging in
     if (newUserId == oldUserId) {
-      if (typeof callback === 'function') callback ();
+      if (typeof callback === 'function') callback (undefined, true);
       return;
     }
 
@@ -52,22 +52,13 @@ Meteor.signInWithExternalService = function (service, options, callback) {
         return;
       }
 
-      // Log out the source user
-      Meteor.logout ( function (error) {
-
+      // Log back in as the original (destination) user
+      Meteor.loginWithToken( oldLoginToken, function (error) {
         if (error) {
           if (typeof callback === 'function') callback (error);
           return;
         }
-
-        // Log back in as the original (destination) user
-        Meteor.loginWithToken( oldLoginToken, function (error) {
-          if (error) {
-            if (typeof callback === 'function') callback (error);
-            return;
-          }
-          if (typeof callback === 'function') callback (undefined, newUserId);
-        });
+        if (typeof callback === 'function') callback (undefined, newUserId);
       });
     });
   });

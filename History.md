@@ -1,3 +1,6 @@
+## v0.0.6
+* Second argument in the callback may be called with true (regular login) or a string (a merge occured, the string is the )
+
 ## v0.0.5
 * Addad Github login service
 
