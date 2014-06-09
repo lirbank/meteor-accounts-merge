@@ -7,7 +7,9 @@ You decided to allow your users to sign in to your Meteor app with Google, Faceb
 The user can even start two separate accounts, for example one with Google and Twitter and one with only Facebook, and populate both accounts with data. When ever the user is logged in to one of the accounts and decide to sign in to the other account, the accounts are merged and all data from both accounts can be retained/merged.
 
 ## Example
-See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.
+**NOT UPDATED! - will be shortly**
+
+~~See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.~~
 
 ## Installation
 To enable merging of accounts, add the `accounts-merge` package and at least one login provider package: `accounts-facebook`, `accounts-github`, `accounts-google`, `accounts-meetup`, `accounts-twitter` or `accounts-weibo`.
