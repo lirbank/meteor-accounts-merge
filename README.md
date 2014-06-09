@@ -51,6 +51,14 @@ AccountsMerge.onMerge = function (winner, loser) {
     {"multi": true}
   );
 
+  // If you use something like accounts-guest, you can handle the guest
+  // users here. Eg. when a user with a (one or more) login service(s) 
+  // is merged with a guest, then the guest is not a guest anymore!
+  Meteor.users.update (
+    winner._id, 
+    {$unset: {"profile.guest": ""}}
+  );
+
   // Remove the merged (losing) user from the DB
   Meteor.users.remove(loser._id);
 }
@@ -61,7 +69,6 @@ AccountsMerge.onMerge = function (winner, loser) {
 * Add support for accounts-meetup
 * Add support for accounts-weibo
 * Add support for accounts-password
-* Add back guest users (temporarily removed)
 * Add support for {{loggingIn}}
 
 ## License
