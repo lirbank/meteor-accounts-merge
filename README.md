@@ -36,7 +36,7 @@ Meteor.signInWithGoogle ({}, function (error, mergedUserId) {
     // documents to avoid havin orphans. You'd typically want to
     // change owner on the items beloning to the deleted user,
     // or simply delete them.
-    Meteor.call ('mergeItems', mergedUserId, function (error, result) {
+    Meteor.call ('mergeItems', function (error, result) {
       // Do something
     });
   }
@@ -48,14 +48,20 @@ Meteor.signInWithGoogle ({}, function (error, mergedUserId) {
 ```javascript
 // ON THE SERVER:
 Meteor.methods({
-  mergeItems: function (mergedUserId) {
+  mergeItems: function () {
 
-    // Update you application specific collection
-    Items.update (
-      {"owner":mergedUserId},
+    var user = Meteor.user();
+    var looser = Meteor.users.findOne({mergedWith: user._id});
+
+    // Update your application specific collection
+    Items.update(
+      {"owner":looser._id},
       {$set: {"owner": Meteor.userId()}},
       {"multi": true}
     );
+
+    // Remove the merged (loosing) user from the DB
+    Meteor.users.remove(looser._id);
   }
 });
 ```
