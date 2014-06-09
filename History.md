@@ -1,3 +1,6 @@
+## v0.0.6
+* Added server side onMerge hook
+
 ## v0.0.5
 * Addad Github login service
 

@@ -1,5 +1,3 @@
-**v0.0.4 includes breaking changes - see the [changelog](https://github.com/lirbank/meteor-accounts-merge/blob/master/History.md)**
-
 # Accounts Merge
 Multiple login services for Meteor accounts - enable your users to login to the same account using any login service.
 
@@ -11,7 +9,7 @@ The user can even start two separate accounts, for example one with Google and T
 ## Example
 See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.
 
-##  Installation
+## Installation
 To enable merging of accounts, add the `accounts-merge` package and at least one login provider package: `accounts-facebook`, `accounts-github`, `accounts-google`, `accounts-meetup`, `accounts-twitter` or `accounts-weibo`.
 
 Make sure you have [Meteorite](https://github.com/oortcloud/meteorite/) installed, from inside a Meteorite-managed app run:
@@ -20,44 +18,42 @@ $ meteor add accounts-facebook accounts-google accounts-twitter
 $ mrt add accounts-merge
 ```
 
+## Upgrade
+Before upgrading, check the [changelog](https://github.com/lirbank/meteor-accounts-merge/blob/master/History.md) for breaking changes. Then run:
+``` sh
+$ mrt update accounts-merge
+```
+
 ## Usage
-To use accounts-merge, simply use Meteor.signInWithGoogle() instead of Meteor.loginWithGoogle(). The new thing to notice is that the callback for signInWithGoogle() is called with two arguments, `error` and `mergedUsers`, while the callback for loginWithGoogle() is only called with a single `error` argument.
+To use accounts-merge, simply use Meteor.signInWithGoogle() instead of Meteor.loginWithGoogle(). The thing to notice is the callback for signInWithGoogle() is now called with two arguments, `error` and `mergedUserId` (the callback for loginWithGoogle() is only called with a single `error` argument).
 
 ```javascript
 // ON THE CLIENT:
 Meteor.signInWithGoogle ({}, function (error, mergedUserId) {
 
   // mergedUsers is set if a merge occured
-  if (mergedUsers) {
-    console.log('merged/deleted userId', mergedUserId);
-
-    // The source account (mergedUserId) has now been deleted, so
-    // this is your chance to deal with application specific DB
-    // documents to avoid havin orphans. You'd typically want to
-    // change owner on the items beloning to the deleted user,
-    // or simply delete them.
-    Meteor.call ('mergeItems', mergedUserId, function (error, result) {
-      // Do something
-    });
+  if (mergedUserId) {
+    console.log(mergedUserId, 'merged with', Meteor.userId());
   }
 });
-// Meteor.signInWithFacebook();
-// Meteor.signInWithTwitter();
+// Meteor.signInWithFacebook({}, callback);
+// Meteor.signInWithTwitter({}, callback);
 ```
 
 ```javascript
-// ON THE SERVER:
-Meteor.methods({
-  mergeItems: function (mergedUserId) {
+// ON THE SERVER (optional):
+AccountsMerge.onMerge = function (winner, loser) {
 
-    // Update you application specific collection
-    Items.update (
-      {"owner":mergedUserId},
-      {$set: {"owner": Meteor.userId()}},
-      {"multi": true}
-    );
-  }
-});
+  // Update application specific collections, eg.
+  Items.update (
+    {"owner": loser._id},
+    {$set: {"owner": winner._id}},
+    {"multi": true}
+  );
+
+  // Remove the merged (losing) user from the DB
+  Meteor.users.remove(loser._id);
+}
 ```
 
 ## Todo
