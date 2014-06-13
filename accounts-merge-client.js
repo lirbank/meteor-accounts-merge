@@ -23,7 +23,7 @@ Meteor.signInWithExternalService = function (service, options, callback) {
   var oldUserId = Meteor.userId();
   var oldLoginToken = Accounts._storedLoginToken();
 
-  Meteor[service]( function (error) {
+  Meteor[service]( options, function (error) {
 
     if (error) {
       if (typeof callback === 'function') callback (error);
