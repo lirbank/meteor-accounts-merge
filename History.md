@@ -1,3 +1,6 @@
+## v0.0.7
+* Added service options when signing onto external service
+
 ## v0.0.6
 * Added server side onMerge hook
 
