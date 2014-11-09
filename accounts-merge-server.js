@@ -19,7 +19,7 @@ Meteor.methods({
     var oldAccount = Meteor.users.findOne(oldAccountId);
     var newAccount = Meteor.users.findOne(this.userId);
 
-    _services = [ "facebook", "twitter", "google", "linkedin", "github" ];
+    _services = [ "facebook", "twitter", "google", "linkedin", "github", "soundcloud" ];
 
     // Move login services from loosing to winning user
     for (i=0; i<_services.length; i++) {
