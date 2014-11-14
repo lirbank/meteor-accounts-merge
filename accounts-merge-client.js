@@ -18,8 +18,8 @@ Meteor.signInWithGithub = function (options, callback) {
   Meteor.signInWithExternalService ('loginWithGithub', options, callback);
 };
 
-Meteor.signInWithGithub = function (options, callback) {
-  Meteor.signInWithExternalService ('loginWithSoundcloud', options, callback);
+Meteor.signInWithSoundCloud = function (options, callback) {
+  Meteor.signInWithExternalService ('loginWithSoundCloud', options, callback);
 };
 
 Meteor.signInWithExternalService = function (service, options, callback) {
