@@ -18,6 +18,10 @@ Meteor.signInWithGithub = function (options, callback) {
   Meteor.signInWithExternalService ('loginWithGithub', options, callback);
 };
 
+Meteor.signInWithVK = function (options, callback) {
+  Meteor.signInWithExternalService ('loginWithVk', options, callback);
+};
+
 Meteor.signInWithExternalService = function (service, options, callback) {
 
   var oldUserId = Meteor.userId();
