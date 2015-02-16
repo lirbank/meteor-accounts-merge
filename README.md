@@ -7,23 +7,21 @@ You decided to allow your users to sign in to your Meteor app with Google, Faceb
 The user can even start two separate accounts, for example one with Google and Twitter and one with only Facebook, and populate both accounts with data. When ever the user is logged in to one of the accounts and decide to sign in to the other account, the accounts are merged and all data from both accounts can be retained/merged.
 
 ## Example
-**NOT UPDATED! - will be shortly**
 
-~~See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.~~
+See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.
 
 ## Installation
-To enable merging of accounts, add the `accounts-merge` package and at least one login provider package: `accounts-facebook`, `accounts-github`, `accounts-google`, `accounts-meetup`, `accounts-twitter` or `accounts-weibo`.
+To enable merging of accounts, add the `accounts-merge` package and at least one login provider package: `accounts-facebook`, `accounts-github`, `accounts-google`, `accounts-meetup`, `accounts-twitter` or `accounts-weibo`, ex:
 
-Make sure you have [Meteorite](https://github.com/oortcloud/meteorite/) installed, from inside a Meteorite-managed app run:
 ``` sh
 $ meteor add accounts-facebook accounts-google accounts-twitter
-$ mrt add accounts-merge
+$ meteor add mikael:accounts-merge
 ```
 
 ## Upgrade
 Before upgrading, check the [changelog](https://github.com/lirbank/meteor-accounts-merge/blob/master/History.md) for breaking changes. Then run:
 ``` sh
-$ mrt update accounts-merge
+$ meteor update mikael:accounts-merge
 ```
 
 ## Usage
@@ -54,10 +52,10 @@ AccountsMerge.onMerge = function (winner, loser) {
   );
 
   // If you use something like accounts-guest, you can handle the guest
-  // users here. Eg. when a user with a (one or more) login service(s) 
+  // users here. Eg. when a user with a (one or more) login service(s)
   // is merged with a guest, then the guest is not a guest anymore!
   Meteor.users.update (
-    winner._id, 
+    winner._id,
     {$unset: {"profile.guest": ""}}
   );
 
