@@ -19,6 +19,7 @@ Meteor.methods({
     var oldAccount = Meteor.users.findOne(oldAccountId);
     var newAccount = Meteor.users.findOne(this.userId);
 
+    // Get the names of the registered oauth services from the Accounts package
     _services = Accounts.oauth.serviceNames();
 
     // Move login services from loosing to winning user
