@@ -1,3 +1,6 @@
+## v0.0.9
+* Support for arbitrary login services. Any login service (including third-party packages) can now be used with accounts-merge without making any code changes.
+
 ## v0.0.8
 * Make accounts-merge compatible with Meteor's new package system
 
