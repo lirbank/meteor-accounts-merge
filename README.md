@@ -11,7 +11,7 @@ The user can even start two separate accounts, for example one with Google and T
 See this [example implementation](https://github.com/lirbank/meteor-accounts-merge-example) to get started.
 
 ## Installation
-To enable merging of accounts, add the `accounts-merge` package and at least one login provider package: `accounts-facebook`, `accounts-github`, `accounts-google`, `accounts-meetup`, `accounts-twitter` or `accounts-weibo`, ex:
+To enable merging of accounts, add the `mikael:accounts-merge` package and at least one login provider package: `accounts-facebook`, `accounts-github`, `accounts-google`, `accounts-meetup`, `accounts-twitter`, `accounts-weibo`, etc., ex:
 
 ``` sh
 $ meteor add accounts-facebook accounts-google accounts-twitter
@@ -66,8 +66,6 @@ AccountsMerge.onMerge = function (winner, loser) {
 
 ## Todo
 * Test with accounts-password (will it work as-is?)
-* Add support for accounts-meetup
-* Add support for accounts-weibo
 * Add support for accounts-password
 * Add support for {{loggingIn}}
 
