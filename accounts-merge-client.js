@@ -1,22 +1,24 @@
-Meteor.signInWithFacebook = function (options, callback) {
-  Meteor.signInWithExternalService ('loginWithFacebook', options, callback);
-};
+function capitalizeWord(word) {
+  return word.charAt(0).toUpperCase() + word.slice(1)
+}
 
-Meteor.signInWithTwitter = function (options, callback) {
-  Meteor.signInWithExternalService ('loginWithTwitter', options, callback);
-};
+function createMethodForService(service) {
+  // Capitalize the first letter of the service name
+  var serviceName = capitalizeWord(service)
 
-Meteor.signInWithGoogle = function (options, callback) {
-  Meteor.signInWithExternalService ('loginWithGoogle', options, callback);
-};
+  // Register a meteor method for this service
+  Meteor['signInWith' + serviceName] = function(options, callback) {
+    Meteor.signInWithExternalService ('loginWith' + serviceName, options, callback);
+  }
+}
 
-Meteor.signInWithLinkedin = function (options, callback) {
-  Meteor.signInWithExternalService ('loginWithLinkedin', options, callback);
-};
+Meteor.startup(function(){
+  // Get the names of the registered oauth services from the Accounts package
+  var services = Accounts.oauth.serviceNames();
 
-Meteor.signInWithGithub = function (options, callback) {
-  Meteor.signInWithExternalService ('loginWithGithub', options, callback);
-};
+  // Create a meteor method for each service
+  _.each(services, createMethodForService);
+});
 
 Meteor.signInWithExternalService = function (service, options, callback) {
 
