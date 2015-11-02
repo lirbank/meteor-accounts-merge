@@ -8,8 +8,8 @@ Package.describe({
 
 Package.onUse(function (api) {
   api.versionsFrom('1.0.3.1');
-  api.use(['accounts-base'], 'client');
-  api.use(['accounts-base'], 'server');
+  api.use('accounts-base', undefined, {weak: true});
+  api.use('check');
   api.addFiles('accounts-merge-server.js', 'server');
   api.addFiles('accounts-merge-client.js', 'client');
   api.export('AccountsMerge');
