@@ -11,7 +11,7 @@ Meteor.methods({
     // the losing user is deleted from the DB using the AccountsMerge.onMerge
     // hook. The hook is executed before the loosing user has been logged
     // out and thus this.userId is null the second time this method is called.
-    if(! this.userId ) {
+    if (! this.userId) {
       return;
     }
 
@@ -25,7 +25,7 @@ Meteor.methods({
     // Move login services from loosing to winning user
     for (i=0; i<_services.length; i++) {
 
-      if( newAccount.services[_services[i]] ) {
+      if (newAccount.services[_services[i]]) {
 
         // Remove service from current user to avoid duplicate key error
         query = {};
@@ -41,7 +41,9 @@ Meteor.methods({
         // Also add the profile.name from the new service.
         query = {};
         query['services.'+_services[i]] = newAccount.services[_services[i]];
-        if( !oldAccount.profile || !oldAccount.profile.name ) query['profile.name'] = newAccount.profile.name;
+        if (!oldAccount.profile || !oldAccount.profile.name) {
+          query['profile.name'] = newAccount.profile.name;
+        }
         try {
           Meteor.users.update (oldAccountId, {$set: query});
         } catch (e) {

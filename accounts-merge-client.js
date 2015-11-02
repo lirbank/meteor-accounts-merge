@@ -1,18 +1,18 @@
 function capitalizeWord(word) {
-  return word.charAt(0).toUpperCase() + word.slice(1)
+  return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 function createMethodForService(service) {
   // Capitalize the first letter of the service name
-  var serviceName = capitalizeWord(service)
+  var serviceName = capitalizeWord(service);
 
   // Register a meteor method for this service
-  Meteor['signInWith' + serviceName] = function(options, callback) {
+  Meteor['signInWith' + serviceName] = function (options, callback) {
     Meteor.signInWithExternalService ('loginWith' + serviceName, options, callback);
-  }
+  };
 }
 
-Meteor.startup(function(){
+Meteor.startup(function () {
   // Get the names of the registered oauth services from the Accounts package
   var services = Accounts.oauth.serviceNames();
 
@@ -25,7 +25,7 @@ Meteor.signInWithExternalService = function (service, options, callback) {
   var oldUserId = Meteor.userId();
   var oldLoginToken = Accounts._storedLoginToken();
 
-  Meteor[service]( options, function (error) {
+  Meteor[service](options, function (error) {
 
     if (error) {
       if (typeof callback === 'function') callback (error);
@@ -55,7 +55,7 @@ Meteor.signInWithExternalService = function (service, options, callback) {
       }
 
       // Log back in as the original (destination) user
-      Meteor.loginWithToken( oldLoginToken, function (error) {
+      Meteor.loginWithToken(oldLoginToken, function (error) {
         if (error) {
           if (typeof callback === 'function') callback (error);
           return;
