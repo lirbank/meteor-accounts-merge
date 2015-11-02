@@ -13,6 +13,12 @@ function createMethodForService(service) {
 }
 
 Meteor.startup(function () {
+
+  // Do nothing if no accounts packages with oauth are loaded
+  if (typeof Accounts !== 'object' || ! Accounts.oauth) {
+    return;
+  }
+
   // Get the names of the registered oauth services from the Accounts package
   var services = Accounts.oauth.serviceNames();
 
