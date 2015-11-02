@@ -1,3 +1,7 @@
+## v0.0.11
+* Updated dependencies and fix for an issue where an unformatted error was
+  displayed on the client if no oauth-based accounts package was installed.
+
 ## v0.0.10
 * On merge, 'profile.name' is now only copied to the winning account if it's
   doesn't already exist.

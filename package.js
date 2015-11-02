@@ -1,6 +1,6 @@
 Package.describe({
   name: 'mikael:accounts-merge',
-  version: '0.0.10',
+  version: '0.0.11',
   summary: 'Multiple login services for Meteor accounts',
   git: 'https://github.com/lirbank/meteor-accounts-merge.git',
   documentation: 'README.md'
