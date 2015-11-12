@@ -1,4 +1,7 @@
 # Accounts Merge
+## forked from [mikael:accounts-merge](https://github.com/lirbank/meteor-accounts-merge)
+----
+
 Multiple login services for Meteor accounts - enable your users to login to the same account using any login service.
 
 ## Use case
@@ -42,8 +45,7 @@ Meteor.signInWithGoogle ({}, function (error, mergedUserId) {
 
 ```javascript
 // ON THE SERVER (optional):
-AccountsMerge.onMerge = function (winner, loser) {
-
+AccountsMerge.onMerge(function(winner, loser){
   // Update application specific collections, eg.
   Items.update (
     {"owner": loser._id},
@@ -61,7 +63,11 @@ AccountsMerge.onMerge = function (winner, loser) {
 
   // Remove the merged (losing) user from the DB
   Meteor.users.remove(loser._id);
-}
+}, [priority=true/false])
+
+// NOTE: setting "priority" will make your function run first
+// if there are multiple routines.  multiple "priority" merge routines
+// will be run LIFO
 ```
 
 ## Todo
