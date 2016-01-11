@@ -48,7 +48,6 @@ Meteor.signInWithExternalService = function (service, options, callback) {
         }
 
         var newUserId = Meteor.userId();
-        console.log("Old:"+oldUserId+",new:"+newUserId)
 
         // Not logged in, logging in now.
         if (!oldUserId) {
@@ -82,8 +81,6 @@ Meteor.signInWithExternalService = function (service, options, callback) {
     };
     if (service != "loginWithPassword")
         Meteor[service](options, loginCallback);
-    else {
+    else 
         Meteor.loginWithPassword(options.user, options.password, loginCallback);
-        console.log("Logging in with password")
-    }
 };
