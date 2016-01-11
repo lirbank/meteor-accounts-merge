@@ -21,6 +21,7 @@ Meteor.methods({
 
     // Get the names of the registered oauth services from the Accounts package
     _services = Accounts.oauth.serviceNames();
+    _services.push("password");
 
     // Move login services from loosing to winning user
     for (i=0; i<_services.length; i++) {
@@ -55,6 +56,16 @@ Meteor.methods({
     // mergedWith holds the _id of the winning account.
     try {
       Meteor.users.update(newAccount._id, {$set: {mergedWith: oldAccountId}});
+    } catch (e) {
+      console.log('error', e.toString());
+    }
+
+    //Move emails to winning
+    var joinedArray = oldAccount.emails.concat(newAccount.emails).filter(function(elem){
+      return elem != null
+    });
+    try {
+      Meteor.users.update(oldAccount._id, {$set: {emails: joinedArray}});
     } catch (e) {
       console.log('error', e.toString());
     }
