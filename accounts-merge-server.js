@@ -66,6 +66,7 @@ Meteor.methods({
     });
     try {
       Meteor.users.update(oldAccount._id, {$set: {emails: joinedArray}});
+	  Meteor.users.update(Meteor.userId(), {$unset: {emails: 1}});
     } catch (e) {
       console.log('error', e.toString());
     }
