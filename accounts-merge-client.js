@@ -1,3 +1,5 @@
+AccountsMerge = {};
+
 function capitalizeWord(word) {
   return word.charAt(0).toUpperCase() + word.slice(1);
 }
@@ -26,48 +28,66 @@ Meteor.startup(function () {
   _.each(services, createMethodForService);
 });
 
-Meteor.signInWithExternalService = function (service, options, callback) {
+AccountsMerge.saveDataBeforeOAuth = function(userId, authToken){
+  Reload._onMigrate('accounts-merge', function () {
+    return [true, {userId: userId, authToken: authToken}];
+  });
+};
 
-  var oldUserId = Meteor.userId();
-  var oldLoginToken = Accounts._storedLoginToken();
+AccountsMerge.getDataAfterOAuth = function(){
+  return Reload._migrationData('accounts-merge');
+};
 
-  Meteor[service](options, function (error) {
+function mergePreviousAccountOnOAuthComplete(error){
+  if (error) {
+    if (typeof callback === 'function') callback (error);
+    return;
+  }
+
+  var oldUser = AccountsMerge.getDataAfterOAuth();
+  var newUserId = Meteor.userId();
+
+  // Not logged in, logging in now.
+  if (!oldUser) {
+    if (typeof callback === 'function') callback ();
+    return;
+  }
+
+  // Login service has already been added, just logging in
+  if (newUserId == oldUser.userId) {
+    if (typeof callback === 'function') callback ();
+    return;
+  }
+
+  // Adding the new login service
+  Meteor.call ('mergeAccounts', oldUser.userId, function (error, result) {
 
     if (error) {
       if (typeof callback === 'function') callback (error);
       return;
     }
 
-    var newUserId = Meteor.userId();
-
-    // Not logged in, logging in now.
-    if (!oldUserId) {
-      if (typeof callback === 'function') callback ();
-      return;
-    }
-
-    // Login service has already been added, just logging in
-    if (newUserId == oldUserId) {
-      if (typeof callback === 'function') callback ();
-      return;
-    }
-
-    // Adding the new login service
-    Meteor.call ('mergeAccounts', oldUserId, function (error, result) {
-
+    // Log back in as the original (destination) user
+    Meteor.loginWithToken(oldUser.authToken, function (error) {
       if (error) {
         if (typeof callback === 'function') callback (error);
         return;
       }
-
-      // Log back in as the original (destination) user
-      Meteor.loginWithToken(oldLoginToken, function (error) {
-        if (error) {
-          if (typeof callback === 'function') callback (error);
-          return;
-        }
-        if (typeof callback === 'function') callback (undefined, newUserId);
-      });
+      if (typeof callback === 'function') callback (undefined, newUserId);
     });
   });
 };
+
+Meteor.signInWithExternalService = function (service, options, callback) {
+
+  var oldUserId = Meteor.userId();
+  var oldLoginToken = Accounts._storedLoginToken();
+
+  AccountsMerge.saveDataBeforeOAuth(oldUserId, oldLoginToken);
+
+  // callback is called if oauth used popup style
+  Meteor[service](options, mergePreviousAccountOnOAuthComplete);
+};
+
+// this method is supposed to be called after an oauth redirect
+Accounts.onLogin(mergePreviousAccountOnOAuthComplete);
