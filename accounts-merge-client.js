@@ -48,7 +48,7 @@ function mergePreviousAccountOnOAuthComplete(error){
   var newUserId = Meteor.userId();
 
   // Not logged in, logging in now.
-  if (!oldUser) {
+  if (!oldUser.userId) {
     if (typeof callback === 'function') callback ();
     return;
   }
